@@ -1,41 +1,11 @@
+/* Requires the Docker Pipeline plugin */
 pipeline {
-    agent any
-
+    agent { docker { image 'python:3.13.0-alpine3.20' } }
     stages {
-        stage('Checkout') {
+        stage('build') {
             steps {
-                git url: 'https://github.com/jsknto/mongoapp.git', branch: 'main'
+                sh 'python --version'
             }
-        }
-
-        stage('Build') {
-            steps {
-                // Install dependencies
-                sh 'npm install'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                // Run tests
-                sh 'npm test'
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                // Deployment logic goes here (e.g., pushing to a cloud provider)
-                echo 'Deploying application...'
-            }
-        }
-    }
-
-    post {
-        always {
-            echo 'Pipeline completed.'
-        }
-        failure {
-            echo 'Pipeline failed!'
         }
     }
 }
